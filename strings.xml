@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- 
+  Please see the license.html file included with this distribution for 
+  attribution and copyright information.
+-->
+
+<root>
+	<string name="option_header_height">Height Extension</string>
+
+	<string name="option_label_Height_Hotkey">Height Hotkey Modifier</string>	
+	<string name="option_val_ctrl">Ctrl</string>
+	<string name="option_val_alt">Alt</string>
+	<string name="option_val_shift">Shift</string>
+	<string name="option_val_wheel">Just Wheel</string>
+
+	<string name="option_label_Height_Font_Size">Height Label Font Size</string>
+	<string name="option_val_small">Small</string>
+	<string name="option_val_medium">Medium</string>
+	<string name="option_val_large">Large</string>
+</root>
