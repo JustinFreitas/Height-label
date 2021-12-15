@@ -15,24 +15,22 @@
 	GNU General Public License for more details.
 -->
 
-<root version="3.3.15.1" release="1">
+<root version="4.1.12.1" release="2">
   <properties>
     <name>Feature: Height</name>
     <version>1</version>
     <author>Madman, Kelrugem and Darrenan. Original author: Ken L</author>
     <description>Height box</description>
   </properties>
-  <announcement text="Height tracker v3.3.15.1 for CoreRPG rulesets. \rBy Madman, Kelrugem and Darrenan, original code by Ken L. Use ALT+MouseWheelScroll to adjust height." font="chatfont" />
+  <announcement text="Height tracker v4.1.12.1 for CoreRPG rulesets. \rBy Madman, Kelrugem and Darrenan, original code by Ken L. Use ALT+MouseWheelScroll to adjust height." font="chatfont" />
   <base>
 	<!-- Strings -->
     <includefile source="strings.xml" />
-    <!-- Initialization -->
-    <!-- <script name="Height" file="scripts/Height.lua" /> -->
 
 	<!-- Height -->
 	<script name="HeightManager" file="scripts/manager_height.lua" />
 	<includefile source="graphics/graphics_fonts.xml" />
 	<!-- High level scripts -->
-	<script name="TokenManager" file="scripts/manager_token.lua" />
+	<script name="TokenManagerKel" file="scripts/manager_token.lua" />
   </base>
 </root>
