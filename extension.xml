@@ -18,12 +18,13 @@
 <root version="4.1.12.1" release="2">
   <properties>
     <name>Feature: Height</name>
-    <version>1</version>
-    <author>Madman, Kelrugem and Darrenan. Original author: Ken L</author>
+    <version>4.1.13.1</version>
+    <author>Madman, Darrenan and Kelrugem. Original author: Ken L</author>
     <description>Height box</description>
   </properties>
-  <announcement text="Height tracker v4.1.12.1 for CoreRPG rulesets. \rBy Madman, Kelrugem and Darrenan, original code by Ken L. Use ALT+MouseWheelScroll to adjust height." font="chatfont" />
+  <announcement text="Height tracker for CoreRPG rulesets, dated at 10 January 2022. By Madman, Darrenan and Kelrugem, original code by Ken L. Use ALT+MouseWheelScroll to adjust height." icon="DeekinMightyBard" font="emotefont" />
   <base>
+	<icon name="DeekinMightyBard" file="DeekinMightyBard.jpg" />
 	<!-- Strings -->
     <includefile source="strings.xml" />
 
