@@ -22,7 +22,7 @@
     <author>Madman, Darrenan and Kelrugem. Original author: Ken L</author>
     <description>Height box</description>
   </properties>
-  <announcement text="Height tracker for CoreRPG rulesets, dated at 10 January 2022. By Madman, Darrenan and Kelrugem, original code by Ken L. Use ALT+MouseWheelScroll to adjust height." icon="DeekinMightyBard" font="emotefont" />
+  <announcement text="Height v4.1.13.1 FGC/FGU, 1/10/22\rBy Ken L., Madman, Darrenan, Kelrugem" icon="DeekinMightyBard" font="emotefont" />
   <base>
 	<icon name="DeekinMightyBard" file="DeekinMightyBard.jpg" />
 	<!-- Strings -->

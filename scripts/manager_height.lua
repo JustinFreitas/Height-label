@@ -1,7 +1,5 @@
 -- KEL: Change your values of measures here, maybe think about a space at the beginning of measure:
--- Incrementsize = GameSystem.getDistanceUnitsPerGrid();
 measure = " ft";
-
 
 --[[
 	Copyright (C) 2018 Ken L.
@@ -22,15 +20,14 @@ measure = " ft";
 	on Init
 ]]--
 function onInit()
-	--Debug.console("HEIGHT MANAGER LOADED"); 
-	Token.onWheel = onWheel; 
+	Token.onWheel = onWheel;
 	registerOptions();
 end
 
 function registerOptions()
-	OptionsManager.registerOption2("HEIGHT",false, "option_header_height", "option_label_Height_Hotkey", "option_entry_cycler", 
+	OptionsManager.registerOption2("HEIGHT",false, "option_header_height", "option_label_Height_Hotkey", "option_entry_cycler",
 		{ labels = "option_val_shift|option_val_ctrl|option_val_wheel", values = "shift|ctrl|wheel", baselabel = "option_val_alt", baseval = "alt", default = "alt" });
-	OptionsManager.registerOption2("HLFS",false, "option_header_height", "option_label_Height_Font_Size", "option_entry_cycler", 
+	OptionsManager.registerOption2("HLFS",false, "option_header_height", "option_label_Height_Font_Size", "option_entry_cycler",
 		{ labels = "option_val_large|option_val_small", values = "large|small", baselabel = "option_val_medium", baseval = "medium", default = "medium" });
 	OptionsManager.registerCallback("HLFS", onFontSizeOptionChanged);
 end
@@ -53,65 +50,49 @@ function onWheel(target, notches)
 	end
 	if bHeight then
 		if not hasHeightWidget(target) then
-			createHeightWidget(target);	
+			createHeightWidget(target);
 		else
-			if notches > 0 then
-				doIncreaseHeight(notches,target);
-			else
-				doDecreaseHeight(notches,target); 
-			end
+			modifyHeight(notches, target);
 		end
-		return true; 
+		return true;
 	end
 end
 
 function setupToken(token)
 	if not hasHeightWidget(token) then
-		createHeightWidget(token); 
+		createHeightWidget(token);
 	else
 		local ct = hasCT(token);
 		if ct then
-			-- local heightNode = ct.createChild("height","number"); 
 			if Session.IsHost then
-				addHolders(token); 
+				addHolders(token);
 			end
 		end
 	end
 end
 
---[[
-	Create the height widget
-]]--
 function createHeightWidget(token)
-	--Debug.console("creating height widget for token: " .. token.getId()); 
 	if hasCT(token) then
-		local wToken, hToken = token.getSize();
-		height = getCTHeight(token); 
-		-- local measure = " " .. Measures.unit;
-		wdg = token.addTextWidget(getWidgetFontName(),height .. measure); 
+		height = getCTHeight(token);
+		wdg = token.addTextWidget(getWidgetFontName(),height .. measure);
 		if wdg then
-			if height == 0 then
-				wdg.setVisible(false);
-			else
-				wdg.setVisible(true);
-			end
-			--Debug.console("widget made" .. token.getId()); 
-			wdg.setName("height_text"); 
-			wdg.setPosition("top",0,8); 
-			wdg.setFrame('tempmodmini',10,7,10,4); 
+			wdg.setVisible(height == 0);
+			wdg.setName("height_text");
+			wdg.setPosition("top", 0, 8);
+			wdg.setFrame('tempmodmini', 10, 7, 10, 4);
 			wdg.setColor('00000000');
-			wdg.bringToFront(); 
-			-- make CT height field if it doesn't exist; 
+			wdg.bringToFront();
+			-- make CT height field if it doesn't exist;
 			local ct = hasCT(token);
 			if ct then
-				local heightNode = ct.createChild("height","number"); 
+				ct.createChild("height", "number");
 				if Session.IsHost then
-					addHolders(token); 
+					addHolders(token);
 				end
 			end
 		end
 	else
-		Debug.console("refusing to create height widget for token: " .. token.getId()); 
+		Debug.console("refusing to create height widget for token: " .. token.getId());
 	end
 end
 
@@ -141,39 +122,34 @@ end
 ]]--
 function addHolders(token)
 	local ct = hasCT(token);
-	local heightNode,charSheets,owner,iden,cl,cn; 
+	local heightNode, charSheets, owner, iden, cl, cn;
 
 	if ct then
-		heightNode = ct.createChild("height","number"); 
+		heightNode = ct.createChild("height","number");
 		if heightNode and Session.IsHost then
 			-- get datasource, try to find the charsheet
 			-- if there's a charsheet, then get the list of users
 			-- find all identities own by each user, if an identity owned by a user
 			-- is equal to the name field on the ct, then make that user a holder
-			--Debug.console("CT node: " .. ct.getPath()); 
 			if ct.getChild('link').getValue() == 'charsheet'then
-				iden = ct.getChild('name').getValue(); 
-				--Debug.console("name of identity: " .. iden); 
-				
+				iden = ct.getChild('name').getValue();
+
 				-- try iterating through char sheets
 				charSheets = DB.findNode('charsheet');
 				if charSheets then
 					cl = charSheets.getChildren();
-					for k,v in pairs(cl) do
-						cn = v.getChild('name'); 
+					for _, v in pairs(cl) do
+						cn = v.getChild('name');
 						if cn then
 							cn = cn.getValue();
-							--Debug.console("cn is >> " .. cn); 
 							if cn == iden then
-								--Debug.console("we have a match, time to look for an owner"); 
-								owner = v.getOwner(); 
-								--Debug.console("Owner is: " .. owner); 
-								break; 
+								owner = v.getOwner();
+								break;
 							end
 						end
 					end
 					if owner then
-						heightNode.addHolder(owner,true); 
+						heightNode.addHolder(owner,true);
 					end
 				end
 			end
@@ -181,69 +157,19 @@ function addHolders(token)
 	end
 end
 
---[[
-	On an identity change we should check all our holders are correct
-]]--
-function updateHolders(token)
-end
-
-
---[[
-	Increase height
-]]--
-function doIncreaseHeight(inc,token)
-	--Debug.console("increasing height " .. inc .. " for token: " .. token.getId()); 
-	local w = hasHeightWidget(token); 
-	local height = getCTHeight(token); 
-	local txtHeight = ""; 
-Incrementsize = GameSystem.getDistanceUnitsPerGrid();
-	height = height+(inc*Incrementsize); 
-	setCTHeight(height,token); 
-
---[[
-	if height == 0 then
-		txtHeight = ''; 
-		w.setVisible(false);
-	else
-		txtHeight = height .. txtHeight .. ' ft'; 
-		w.setVisible(true);
-	end
-
-	w.setText(txtHeight); 
-]]--
-end
-
---[[
-	Decrease height
-]]--
-function doDecreaseHeight(inc,token)
-	--Debug.console("decreasing height " .. inc .. " for token: " .. token.getId()); 
-	local w = hasHeightWidget(token); 
-	local height = getCTHeight(token); 
-	local txtHeight = ""; 
-Incrementsize = GameSystem.getDistanceUnitsPerGrid();
-	height = height+(inc*Incrementsize); 
-	setCTHeight(height,token); 
---[[
-	if height == 0 then
-		txtHeight = ''; 
-		w.setVisible(false);
-	else
-		txtHeight = height .. txtHeight .. ' ft'; 
-		w.setVisible(true);
-	end
-
-
-	w.setText(txtHeight); 
-]]--
+function modifyHeight(inc, token)
+	local height = getCTHeight(token);
+	local incrementSize = GameSystem.getDistanceUnitsPerGrid();
+	height = height + (inc * incrementSize);
+	setCTHeight(height, token);
 end
 
 --[[
 	Return CT if the token is on the CT else, nil
 ]]--
 function hasCT(token)
-	local ct = CombatManager.getCTFromToken(token); 
-	return ct; 
+	local ct = CombatManager.getCTFromToken(token);
+	return ct;
 end
 
 --[[
@@ -251,28 +177,22 @@ end
 	given the token
 ]]--
 function updateHeight(token)
-	local wdg = hasHeightWidget(token);  
-	local ct = hasCT(token); 
+	local wdg = hasHeightWidget(token);
+	local ct = hasCT(token);
 	if wdg and ct then
-		local height = getCTHeight(token); 	
-		local txtHeight = ""; 
+		local height = getCTHeight(token);
+		local txtHeight = "";
 
 		if height == 0 then
-			txtHeight = ''; 
+			txtHeight = '';
 			wdg.setVisible(false);
 		else
-			txtHeight = height .. txtHeight .. measure; 
+			txtHeight = height .. txtHeight .. measure;
 			wdg.setVisible(true);
 		end
-		wdg.setText(txtHeight); 
-		wdg.bringToFront(); 
+		wdg.setText(txtHeight);
+		wdg.bringToFront();
 	end
-	
-	-- if ct then
-		-- if Session.IsHost then
-			-- addHolders(token); 
-		-- end
-	-- end
 end
 
 --[[
@@ -281,17 +201,13 @@ end
 	height. If not on the CT, nothing
 ]]--
 function setCTHeight(height,token)
-	local ct = CombatManager.getCTFromToken(token); 
+	local ct = CombatManager.getCTFromToken(token);
 
 	if ct then
-		heightNode = ct.createChild("height","number"); 
+		local heightNode = ct.createChild("height","number");
 		if heightNode then
-			--Debug.console("setHeight... owner is: " .. tostring(heightNode.getOwner())); 
 			if heightNode then
-				heightNode.setValue(height); 
-				--Debug.console('height configured as ' .. height .. ' ready only? ' .. tostring(heightNode.isReadOnly())); 
-			else
-				--Debug.console("can't set height as: " .. height); 
+				heightNode.setValue(height);
 			end
 		end
 	end
@@ -305,21 +221,17 @@ end
 	on the CT, nothing
 ]]--
 function getCTHeight(token)
-	local ct = CombatManager.getCTFromToken(token); 
+	local ct = CombatManager.getCTFromToken(token);
 
 	if ct then
-		--Debug.console(ct.getPath()); 
-		heightNode = ct.createChild("height","number"); 
+		local heightNode = ct.createChild("height","number");
 		if heightNode then
-			local height = tonumber(heightNode.getValue()); 
-			--Debug.console('height is ' .. height); 
-			return height; 
-		else
-			--Debug.console("can't get height"); 
+			local height = tonumber(heightNode.getValue());
+			return height;
 		end
 	end
 
-	return 0; 
+	return 0;
 end
 
 --[[
@@ -327,11 +239,10 @@ end
 	dual purpose!
 ]]--
 function hasHeightWidget(token)
-	local w; 
+	local w;
 	if token then
-		w = token.findWidget("height_text"); 
-		--Debug.console(tostring(w)); 
+		w = token.findWidget("height_text");
 	end
 
-	return w; 
+	return w;
 end
