@@ -1,5 +1,5 @@
 -- KEL: Change your values of measures here, maybe think about a space at the beginning of measure:
-measure = " ft";
+UNIT_OF_MEASURE = " ft";
 
 --[[
 	Copyright (C) 2018 Ken L.
@@ -61,6 +61,7 @@ end
 function setupToken(token)
 	if not hasHeightWidget(token) then
 		createHeightWidget(token);
+		updateHeight(token);
 	else
 		local ct = hasCT(token);
 		if ct then
@@ -73,8 +74,8 @@ end
 
 function createHeightWidget(token)
 	if hasCT(token) then
-		height = getCTHeight(token);
-		wdg = token.addTextWidget(getWidgetFontName(),height .. measure);
+		local height = getCTHeight(token);
+		local wdg = token.addTextWidget(getWidgetFontName(), height .. UNIT_OF_MEASURE);
 		if wdg then
 			wdg.setVisible(height == 0);
 			wdg.setName("height_text");
@@ -91,8 +92,6 @@ function createHeightWidget(token)
 				end
 			end
 		end
-	else
-		Debug.console("refusing to create height widget for token: " .. token.getId());
 	end
 end
 
@@ -102,7 +101,7 @@ end
 
 function onFontSizeOptionChanged()
 	local sWidgetFontName = getWidgetFontName();
-	for k,v in pairs(DB.getChildren("combattracker.list")) do
+	for k, v in pairs(DB.getChildren("combattracker.list")) do
 		if k ~= "public" then
 			local token = CombatManager.getTokenFromCT(v);
 			local wWidget = hasHeightWidget(token);
@@ -187,7 +186,7 @@ function updateHeight(token)
 			txtHeight = '';
 			wdg.setVisible(false);
 		else
-			txtHeight = height .. txtHeight .. measure;
+			txtHeight = height .. txtHeight .. UNIT_OF_MEASURE;
 			wdg.setVisible(true);
 		end
 		wdg.setText(txtHeight);
@@ -234,15 +233,7 @@ function getCTHeight(token)
 	return 0;
 end
 
---[[
-	Return the height widget if the token has it, else nil,
-	dual purpose!
-]]--
+--Return the height widget if the token has it, else nil.
 function hasHeightWidget(token)
-	local w;
-	if token then
-		w = token.findWidget("height_text");
-	end
-
-	return w;
+	return token.findWidget("height_text");
 end
