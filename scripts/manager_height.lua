@@ -235,5 +235,9 @@ end
 
 --Return the height widget if the token has it, else nil.
 function hasHeightWidget(token)
-	return token.findWidget("height_text");
+	if token then
+		return token.findWidget("height_text");
+	else
+		return nil;
+	end
 end

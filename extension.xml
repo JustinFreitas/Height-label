@@ -18,11 +18,11 @@
 <root version="4.1.12.1" release="2">
   <properties>
     <name>Feature: Height</name>
-    <version>4.1.13.1</version>
+    <version>4.1.13.2</version>
     <author>Madman, Darrenan and Kelrugem. Original author: Ken L</author>
     <description>Height box</description>
   </properties>
-  <announcement text="Height v4.1.13.1 FGC/FGU, 1/10/22\rBy Ken L., Madman, Darrenan, Kelrugem" icon="DeekinMightyBard" font="emotefont" />
+  <announcement text="Height v4.1.13.2 FGC/FGU, 2/16/22\rKen L., Madman, Darrenan, Kelrugem, Justin Freitas" icon="DeekinMightyBard" font="emotefont" />
   <base>
 	<icon name="DeekinMightyBard" file="DeekinMightyBard.jpg" />
 	<!-- Strings -->
