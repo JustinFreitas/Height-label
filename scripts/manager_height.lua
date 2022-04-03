@@ -28,9 +28,9 @@ function onInit()
 end
 
 function registerOptions()
-	OptionsManager.registerOption2("HEIGHT",false, "option_header_height", "option_label_Height_Hotkey", "option_entry_cycler", 
+	OptionsManager.registerOption2("HEIGHT",true, "option_header_height", "option_label_Height_Hotkey", "option_entry_cycler", 
 		{ labels = "option_val_shift|option_val_ctrl|option_val_wheel", values = "shift|ctrl|wheel", baselabel = "option_val_alt", baseval = "alt", default = "alt" });
-	OptionsManager.registerOption2("HLFS",false, "option_header_height", "option_label_Height_Font_Size", "option_entry_cycler", 
+	OptionsManager.registerOption2("HLFS",true, "option_header_height", "option_label_Height_Font_Size", "option_entry_cycler", 
 		{ labels = "option_val_large|option_val_small", values = "large|small", baselabel = "option_val_medium", baseval = "medium", default = "medium" });
 	OptionsManager.registerCallback("HLFS", onFontSizeOptionChanged);
 end
